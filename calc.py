@@ -1,0 +1,33 @@
+def calculator():
+    print("Simple Calculator")
+    print("Select operation: +, -, *, /")
+    
+    # Take input from the user
+    num1 = float(input("Enter first number: "))
+    operator = input("Enter operator (+, -, *, /): ")
+    num2 = float(input("Enter second number: "))
+
+    # Python's switch-case equivalent (match-case)
+    match operator:
+        case '+':
+            result = num1 + num2
+            print(f"Result: {num1} + {num2} = {result}")
+        case '-':
+            result = num1 - num2
+            print(f"Result: {num1} - {num2} = {result}")
+        case '*':
+            result = num1 * num2
+            print(f"Result: {num1} * {num2} = {result}")
+        case '/':
+            # Handle division by zero
+            if num2 != 0:
+                result = num1 / num2
+                print(f"Result: {num1} / {num2} = {result}")
+            else:
+                print("Error: Division by zero is not allowed.")
+        case _:
+            print("Error: Invalid operator entered.")
+
+# Run the calculator
+if __name__ == "__main__":
+    calculator()
