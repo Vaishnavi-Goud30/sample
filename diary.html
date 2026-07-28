@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Daily Diary</title>
+ <style>
+   body { font-family: Arial; max-width: 600px; margin: auto; }
+   textarea { width: 100%; height: 100px; }
+   .entry { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+   button { margin-top: 5px; }
+ </style>
+</head>
+<body>
+ <h1>My Diary</h1>
+ <textarea id="diaryText" placeholder="Write your thoughts..."></textarea><br>
+ <button onclick="saveEntry()">Save Entry</button>
+ <div id="entries"></div>
+<script>
+function loadEntries() {
+ const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+ const container = document.getElementById('entries');
+ container.innerHTML = '';
+ entries.forEach((text, index) => {
+   container.innerHTML += `<div class="entry">
+     <p>${text}</p>
+     <button onclick="deleteEntry(${index})">Delete</button>
+   </div>`;
+ });
+}
+function saveEntry() {
+ const text = document.getElementById('diaryText').value.trim();
+ if (!text) return;
+ const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+ entries.push(text);
+ localStorage.setItem('diaryEntries', JSON.stringify(entries));
+ document.getElementById('diaryText').value = '';
+ loadEntries();
+}
+function deleteEntry(index) {
+ const entries = JSON.parse(localStorage.getItem('diaryEntries') || '[]');
+ entries.splice(index, 1);
+ localStorage.setItem('diaryEntries', JSON.stringify(entries));
+ loadEntries();
+}
+window.onload = loadEntries;
+</script>
+</body>
+</html>
