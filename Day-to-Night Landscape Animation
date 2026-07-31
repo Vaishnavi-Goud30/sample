@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day to Night Animation</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(#87ceeb, #f0e68c);
+    transition: background 2s linear;
+  }
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<script>
+const canvas = document.getElementById('scene');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let time = 0; // 0 = sunrise, 1 = sunset, 2 = night
+let stars = [];
+
+// Generate stars
+for (let i = 0; i < 100; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height / 2,
+    size: Math.random() * 2
+  });
+}
+
+function drawSky() {
+  let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  if (time < 1) {
+    // Day
+    gradient.addColorStop(0, '#87ceeb');
+    gradient.addColorStop(1, '#f0e68c');
+  } else if (time < 2) {
+    // Sunset
+    gradient.addColorStop(0, '#ff7e5f');
+    gradient.addColorStop(1, '#feb47b');
+  } else {
+    // Night
+    gradient.addColorStop(0, '#0b0c10');
+    gradient.addColorStop(1, '#1f2833');
+  }
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawSun() {
+  let sunX = canvas.width / 2;
+  let sunY = canvas.height / 2 + Math.sin(time * Math.PI) * 200;
+  ctx.beginPath();
+  ctx.arc(sunX, sunY, 50, 0, Math.PI * 2);
+  ctx.fillStyle = time < 2 ? 'yellow' : 'white';
+  ctx.fill();
+}
+
+function drawStars() {
+  if (time >= 2) {
+    ctx.fillStyle = 'white';
+    stars.forEach(star => {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  }
+}
+
+function drawGround() {
+  ctx.fillStyle = '#228B22';
+  ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+}
+
+function animate() {
+  drawSky();
+  drawSun();
+  drawStars();
+  drawGround();
+
+  time += 0.005;
+  if (time > 3) time = 0; // Loop cycle
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
