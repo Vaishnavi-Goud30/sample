@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talking Pet</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #fef6e4;
+    margin: 0;
+    padding: 20px;
+  }
+  .pet {
+    width: 150px;
+    height: 150px;
+    background: url('https://i.pinimg.com/originals/c1/3e/08/c13e086162b416616142b0c6b1c57050.jpg') no-repeat center/cover;
+    margin: 20px auto;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .pet:active {
+    transform: scale(1.1);
+  }
+  .message-box {
+    background: #fff3cd;
+    border: 2px solid #f0ad4e;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    min-width: 200px;
+    margin-top: 10px;
+  }
+  input {
+    padding: 8px;
+    width: 200px;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  button {
+    padding: 8px 12px;
+    margin-left: 5px;
+    border: none;
+    background: #f0ad4e;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h1>🐾 Talking Pet</h1>
+<div class="pet" id="pet"></div>
+<div class="message-box" id="petMessage">Click me or say something!</div>
+
+<input type="text" id="userInput" placeholder="Type a message...">
+<button onclick="sendMessage()">Send</button>
+
+<script>
+  const pet = document.getElementById('pet');
+  const petMessage = document.getElementById('petMessage');
+  const userInput = document.getElementById('userInput');
+
+  const clickResponses = [
+    "Purr... I like that!",
+    "Meow! You touched me!",
+    "🐾 That tickles!",
+    "Yay! Playtime!"
+  ];
+
+  pet.addEventListener('click', () => {
+    const randomMsg = clickResponses[Math.floor(Math.random() * clickResponses.length)];
+    petMessage.textContent = randomMsg;
+  });
+
+  function sendMessage() {
+    const text = userInput.value.trim();
+    if (text) {
+      petMessage.textContent = `You said: "${text}" 🐱`;
+      userInput.value = '';
+    } else {
+      petMessage.textContent = "Say something to me!";
+    }
+  }
+</script>
+
+</body>
+</html>
