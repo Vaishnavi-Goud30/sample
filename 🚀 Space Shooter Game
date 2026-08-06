@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Space Shooter</title>
+<style>
+  body { margin: 0; background: black; overflow: hidden; }
+  canvas { display: block; margin: auto; background: #000; }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="500" height="600"></canvas>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let ship = { x: 230, y: 550, width: 40, height: 20, speed: 5 };
+let bullets = [];
+let enemies = [];
+let score = 0;
+
+// Create enemies
+for (let i = 0; i < 5; i++) {
+  enemies.push({ x: 60 + i * 80, y: 50, width: 40, height: 20, alive: true });
+}
+
+// Draw ship
+function drawShip() {
+  ctx.fillStyle = "cyan";
+  ctx.fillRect(ship.x, ship.y, ship.width, ship.height);
+}
+
+// Draw bullets
+function drawBullets() {
+  ctx.fillStyle = "yellow";
+  bullets.forEach(b => ctx.fillRect(b.x, b.y, 4, 10));
+}
+
+// Draw enemies
+function drawEnemies() {
+  ctx.fillStyle = "red";
+  enemies.forEach(e => {
+    if (e.alive) ctx.fillRect(e.x, e.y, e.width, e.height);
+  });
+}
+
+// Move bullets
+function moveBullets() {
+  bullets.forEach(b => b.y -= 7);
+  bullets = bullets.filter(b => b.y > 0);
+}
+
+// Collision detection
+function checkCollisions() {
+  bullets.forEach(b => {
+    enemies.forEach(e => {
+      if (e.alive &&
+          b.x < e.x + e.width &&
+          b.x + 4 > e.x &&
+          b.y < e.y + e.height &&
+          b.y + 10 > e.y) {
+        e.alive = false;
+        b.y = -10; // remove bullet
+        score += 10;
+      }
+    });
+  });
+}
+
+// Draw score
+function drawScore() {
+  ctx.fillStyle = "white";
+  ctx.font = "16px Arial";
+  ctx.fillText("Score: " + score, 10, 20);
+}
+
+// Game loop
+function gameLoop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawShip();
+  drawBullets();
+  drawEnemies();
+  drawScore();
+  moveBullets();
+  checkCollisions();
+  requestAnimationFrame(gameLoop);
+}
+
+// Controls
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft" && ship.x > 0) ship.x -= ship.speed;
+  if (e.key === "ArrowRight" && ship.x < canvas.width - ship.width) ship.x += ship.speed;
+  if (e.key === " ") {
+    bullets.push({ x: ship.x + ship.width / 2 - 2, y: ship.y });
+  }
+});
+
+gameLoop();
+</script>
+</body>
+</html>
