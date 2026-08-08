@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Suggestion App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ffcc00;
+        }
+        .movie-card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        button {
+            background-color: #ffcc00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #e6b800;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎬 Movie Suggestion</h1>
+    <div class="movie-card" id="movieCard">
+        <h2>Click the button to get a movie suggestion!</h2>
+    </div>
+    <button onclick="suggestMovie()">Suggest a Movie</button>
+
+    <script>
+        // Predefined movie list
+        const movies = [
+            {
+                title: "Inception",
+                year: 2010,
+                poster: "https://m.media-amazon.com/images/I/51zUbui+gbL._AC_.jpg",
+                description: "A thief who steals corporate secrets through dream-sharing technology is given a chance to erase his criminal record."
+            },
+            {
+                title: "The Dark Knight",
+                year: 2008,
+                poster: "https://m.media-amazon.com/images/I/51k0qa6qH-L._AC_.jpg",
+                description: "Batman faces the Joker, a criminal mastermind who plunges Gotham into chaos."
+            },
+            {
+                title: "Interstellar",
+                year: 2014,
+                poster: "https://m.media-amazon.com/images/I/71n58xD2Z-L._AC_SL1024_.jpg",
+                description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
+            },
+            {
+                title: "Avengers: Endgame",
+                year: 2019,
+                poster: "https://m.media-amazon.com/images/I/81ExhpBEbHL._AC_SL1500_.jpg",
+                description: "The Avengers assemble once more to reverse Thanos' actions and restore balance to the universe."
+            }
+        ];
+
+        // Function to suggest a random movie
+        function suggestMovie() {
+            const randomIndex = Math.floor(Math.random() * movies.length);
+            const movie = movies[randomIndex];
+            document.getElementById("movieCard").innerHTML = `
+                <h2>${movie.title} (${movie.year})</h2>
+                <img src="${movie.poster}" alt="${movie.title} Poster">
+                <p>${movie.description}</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
