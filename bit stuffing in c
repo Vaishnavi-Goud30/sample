@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_LEN 256  // Maximum input length
+
+// Function to validate that the input contains only '0' and '1'
+int isValidBinary(const char *data) {
+    for (int i = 0; data[i] != '\0'; i++) {
+        if (data[i] != '0' && data[i] != '1') {
+            return 0; // Invalid character found
+        }
+    }
+    return 1;
+}
+
+// Function to perform bit stuffing
+void bitStuffing(const char *input, char *stuffed) {
+    int count = 0; // Count of consecutive 1's
+    int j = 0;     // Index for stuffed array
+
+    for (int i = 0; input[i] != '\0'; i++) {
+        stuffed[j++] = input[i];
+
+        if (input[i] == '1') {
+            count++;
+            if (count == 5) {
+                stuffed[j++] = '0'; // Stuff a '0' after five consecutive '1's
+                count = 0;          // Reset count
+            }
+        } else {
+            count = 0; // Reset count if bit is '0'
+        }
+    }
+    stuffed[j] = '\0'; // Null-terminate the stuffed string
+}
+
+int main() {
+    char data[MAX_LEN], stuffed[MAX_LEN * 2]; // Stuffed data can be longer
+
+    printf("Enter binary data: ");
+    if (scanf("%255s", data) != 1) {
+        printf("Error reading input.\n");
+        return 1;
+    }
+
+    // Validate input
+    if (!isValidBinary(data)) {
+        printf("Invalid input! Please enter only 0s and 1s.\n");
+        return 1;
+    }
+
+    // Perform bit stuffing
+    bitStuffing(data, stuffed);
+
+    printf("Original Data: %s\n", data);
+    printf("Stuffed Data : %s\n", stuffed);
+
+    return 0;
+}
