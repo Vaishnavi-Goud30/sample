@@ -1,0 +1,83 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class WhatsAppServer {
+    private static final int PORT = 12345;
+    private static Set<ClientHandler> clientHandlers = Collections.synchronizedSet(new HashSet<>());
+
+    public static void main(String[] args) {
+        System.out.println("WhatsApp Server started on port " + PORT);
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            while (true) {
+                Socket socket = serverSocket.accept();
+                System.out.println("New user connected: " + socket.getRemoteSocketAddress());
+                ClientHandler clientHandler = new ClientHandler(socket);
+                clientHandlers.add(clientHandler);
+                new Thread(clientHandler).start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Broadcast messages to all connected clients
+    public static void broadcast(String message, ClientHandler excludeUser) {
+        synchronized (clientHandlers) {
+            for (ClientHandler client : clientHandlers) {
+                if (client != excludeUser) {
+                    client.sendMessage(message);
+                }
+            }
+        }
+    }
+
+    // Remove client when they disconnect
+    public static void removeClient(ClientHandler clientHandler) {
+        clientHandlers.remove(clientHandler);
+        System.out.println("A user disconnected.");
+    }
+
+    // ClientHandler class to manage individual client threads
+    private static class ClientHandler implements Runnable {
+        private Socket socket;
+        private PrintWriter out;
+        private BufferedReader in;
+        private String clientName;
+
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            try {
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                // First message received from client is their username
+                clientName = in.readLine();
+                WhatsAppServer.broadcast("📢 " + clientName + " joined the chat!", this);
+
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    WhatsAppServer.broadcast("[" + clientName + "]: " + inputLine, this);
+                }
+            } catch (IOException e) {
+                // Handle client disconnection gracefully
+            } finally {
+                WhatsAppServer.removeClient(this);
+                WhatsAppServer.broadcast("❌ " + clientName + " left the chat.", null);
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public void sendMessage(String message) {
+            out.println(message);
+        }
+    }
+}
