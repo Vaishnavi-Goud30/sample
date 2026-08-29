@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Picker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .color-box {
+      width: 150px;
+      height: 150px;
+      margin: 20px auto;
+      border: 2px solid #333;
+      border-radius: 8px;
+    }
+    .color-value {
+      font-size: 18px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Color Picker</h1>
+  
+  <!-- Input for color -->
+  <input type="color" id="colorPicker" value="#964B00">
+  
+  <!-- Box to display chosen color -->
+  <div class="color-box" id="colorBox"></div>
+  
+  <!-- Text to show hex value -->
+  <div class="color-value" id="colorValue">#964B00</div>
+  
+  <script>
+    const colorPicker = document.getElementById("colorPicker");
+    const colorBox = document.getElementById("colorBox");
+    const colorValue = document.getElementById("colorValue");
+
+    // Update box and text when color changes
+    colorPicker.addEventListener("input", function() {
+      const selectedColor = colorPicker.value;
+      colorBox.style.backgroundColor = selectedColor;
+      colorValue.textContent = selectedColor;
+    });
+  </script>
+</body>
+</html>
