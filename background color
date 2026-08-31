@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Background Color Changer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      margin-top: 50px;
+    }
+    .color-value {
+      font-size: 18px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎨 Background Color Changer</h1>
+  
+  <!-- Color Picker -->
+  <input type="color" id="colorPicker" value="#ffcc00">
+  
+  <!-- Show selected color -->
+  <div class="color-value" id="colorValue">#ffcc00</div>
+  
+  <!-- Reset Button -->
+  <button id="resetBtn">Reset Background</button>
+  
+  <script>
+    const colorPicker = document.getElementById("colorPicker");
+    const colorValue = document.getElementById("colorValue");
+    const resetBtn = document.getElementById("resetBtn");
+
+    // Change background when color is picked
+    colorPicker.addEventListener("input", function() {
+      const selectedColor = colorPicker.value;
+      document.body.style.backgroundColor = selectedColor;
+      colorValue.textContent = selectedColor;
+    });
+
+    // Reset background to white
+    resetBtn.addEventListener("click", function() {
+      document.body.style.backgroundColor = "#ffffff";
+      colorValue.textContent = "#ffffff";
+      colorPicker.value = "#ffffff";
+    });
+  </script>
+</body>
+</html>
