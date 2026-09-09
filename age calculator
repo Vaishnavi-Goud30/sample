@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fce4ec;
+      color: #333;
+    }
+    .container {
+      margin-top: 50px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      display: inline-block;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    input, select {
+      padding: 10px;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #ff80ab;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #f06292;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    .emoji {
+      font-size: 50px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🎂 Age Calculator with Gender Emojis 🎂</h2>
+    <label for="dob">Enter your Date of Birth:</label><br>
+    <input type="date" id="dob">
+    <br>
+    <label for="gender">Select your Gender:</label><br>
+    <select id="gender">
+      <option value="male">Male ♂️</option>
+      <option value="female">Female ♀️</option>
+      <option value="other">Other ⚧️</option>
+    </select>
+    <br>
+    <button onclick="calculateAge()">Calculate Age</button>
+    <div class="result" id="result"></div>
+    <div class="emoji" id="emoji"></div>
+  </div>
+
+  <script>
+    function calculateAge() {
+      const dob = document.getElementById("dob").value;
+      const gender = document.getElementById("gender").value;
+      if (!dob) {
+        alert("Please enter your date of birth!");
+        return;
+      }
+      const dobDate = new Date(dob);
+      const today = new Date();
+      let age = today.getFullYear() - dobDate.getFullYear();
+      const monthDiff = today.getMonth() - dobDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+      }
+
+      document.getElementById("result").innerText = `You are ${age} years old!`;
+
+      let emoji = "";
+      if (age <= 5) {
+        emoji = gender === "male" ? "👶🏻" : gender === "female" ? "👶🏼" : "👶";
+      } else if (age <= 12) {
+        emoji = gender === "male" ? "🧒🏻" : gender === "female" ? "🧒🏼" : "🧒";
+      } else if (age <= 19) {
+        emoji = gender === "male" ? "🧑🏻" : gender === "female" ? "🧑🏼" : "🧑";
+      } else if (age <= 35) {
+        emoji = gender === "male" ? "🧑🏻‍💻" : gender === "female" ? "🧑🏼‍💻" : "🧑‍💻";
+      } else if (age <= 60) {
+        emoji = gender === "male" ? "🧑🏻‍🦳" : gender === "female" ? "🧑🏼‍🦳" : "🧑‍🦳";
+      } else {
+        emoji = gender === "male" ? "👴🏻" : gender === "female" ? "👵🏼" : "👴👵";
+      }
+
+      document.getElementById("emoji").innerText = emoji;
+    }
+  </script>
+</body>
+</html>
