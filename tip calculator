@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tip Calculator</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 320px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #2575fc;
+      outline: none;
+      box-shadow: 0 0 8px rgba(37,117,252,0.5);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2575fc;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #6a11cb;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>💸 Tip Calculator</h2>
+    <input type="number" id="billAmount" placeholder="Enter bill amount">
+    <select id="tipPercent">
+      <option value="0.1">10% Tip</option>
+      <option value="0.15">15% Tip</option>
+      <option value="0.2">20% Tip</option>
+      <option value="0.25">25% Tip</option>
+    </select>
+    <input type="number" id="peopleCount" placeholder="Number of people" min="1" value="1">
+    <button onclick="calculateTip()">Calculate</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateTip() {
+      const bill = parseFloat(document.getElementById('billAmount').value);
+      const tipPercent = parseFloat(document.getElementById('tipPercent').value);
+      const people = parseInt(document.getElementById('peopleCount').value);
+
+      if (isNaN(bill) || bill <= 0 || people <= 0) {
+        document.getElementById('result').innerText = "⚠️ Please enter valid values!";
+        return;
+      }
+
+      const tip = bill * tipPercent;
+      const total = bill + tip;
+      const perPerson = total / people;
+
+      document.getElementById('result').innerHTML = `
+        💰 Tip: ₹${tip.toFixed(2)} <br>
+        🧾 Total: ₹${total.toFixed(2)} <br>
+        👥 Per Person: ₹${perPerson.toFixed(2)}
+      `;
+    }
+  </script>
+</body>
+</html>
