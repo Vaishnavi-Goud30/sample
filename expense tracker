@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .tracker {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 350px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #a6c1ee;
+      outline: none;
+      box-shadow: 0 0 8px rgba(166,193,238,0.5);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #a6c1ee;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #fbc2eb;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    li {
+      background: #f9f9f9;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .total {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+      color: #444;
+    }
+
+    .delete {
+      background: #ff6b6b;
+      border: none;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .delete:hover {
+      background: #ff4757;
+    }
+  </style>
+</head>
+<body>
+  <div class="tracker">
+    <h2>💰 Expense Tracker</h2>
+    <input type="text" id="expenseName" placeholder="Expense name">
+    <input type="number" id="expenseAmount" placeholder="Amount (₹)">
+    <button onclick="addExpense()">Add Expense</button>
+    <ul id="expenseList"></ul>
+    <div class="total" id="total">Total: ₹0</div>
+  </div>
+
+  <script>
+    let total = 0;
+
+    function addExpense() {
+      const name = document.getElementById('expenseName').value.trim();
+      const amount = parseFloat(document.getElementById('expenseAmount').value);
+
+      if (!name || isNaN(amount) || amount <= 0) {
+        alert("⚠️ Please enter valid expense details!");
+        return;
+      }
+
+      const li = document.createElement('li');
+      li.innerHTML = `
+        ${name} - ₹${amount.toFixed(2)}
+        <button class="delete" onclick="deleteExpense(this, ${amount})">X</button>
+      `;
+
+      document.getElementById('expenseList').appendChild(li);
+
+      total += amount;
+      document.getElementById('total').innerText = `Total: ₹${total.toFixed(2)}`;
+
+      document.getElementById('expenseName').value = "";
+      document.getElementById('expenseAmount').value = "";
+    }
+
+    function deleteExpense(button, amount) {
+      button.parentElement.remove();
+      total -= amount;
+      document.getElementById('total').innerText = `Total: ₹${total.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
